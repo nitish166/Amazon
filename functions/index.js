@@ -23,6 +23,17 @@ app.get("/", (request, response) => response.status(200).send("hello world"));
 app.post("/payments/create", async (request, response) => {
   const total = request.query.total;
   console.log("Payment request recived Boom!! for this amount", total);
+
+  const paymentIntent = await stripe.paymentIntent.create({
+    amount: total,
+    currency: "usd",
+  });
+
+  // ok - Created
+
+  response.status(201).send({
+    clientSecret: paymentIntent.clientSecret,
+  });
 });
 // Listen command
 
